@@ -1,4 +1,4 @@
-# MontyPython-MarkovMactation
+# Monty Python Markov Mactation
 
 Author: Carson Vandegriffe
 Desc: Using a Markov Chain to generate Monty Python Dialogue given scraped movie/tv script data.
