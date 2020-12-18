@@ -1,4 +1,4 @@
-![HeaderImage](header.jpeg)
+![HeaderImage](header.jpg)
 # Monty Python Markov Mactation
 
 ### Author: Carson Vandegriffe
