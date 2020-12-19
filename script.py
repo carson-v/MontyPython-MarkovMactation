@@ -137,8 +137,8 @@ def builder(matrix, size):
         if (text is None) or (str(text[-1]) in (string.punctuation)):
             text.append((random.choices(list(matrix["*"].keys()), weights = [matrix["*"][w] for w in matrix["*"].keys()], k = 1)[0]).capitalize())
         
-        #duplicate check
-        if len(text) > 1 and text[-1] == text[-2]:
+        #duplicate and random punctuation check
+        if (len(text) > 1 and text[-1] == text[-2]) or text[-1] in string.punctuation:
             text.pop(-1)
 
         #else add to chain
