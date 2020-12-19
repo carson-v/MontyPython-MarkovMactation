@@ -3,10 +3,11 @@
 
 Markov Chains with Monty Python Dialogue given scraped movie/tv script data.
 
-Usage:
-```
-	python3 script.py
-```
+Usage: Run ``` python3 script.py ``` and input # of words to be generated
+
+## Output Example:
+
+![ExampleOutput](outex.jpg)
 
 Requirements:
 - Python3
