@@ -21,4 +21,4 @@ Requirements:
 - ! Tracks probability that a certain punctuation mark comes after a word/phrase.
 - ! Necessarily ends text generation on a punctuation mark.
 
-### Author's Note: Thanks for checking out my project! 
+### Thanks for checking out my project! 
