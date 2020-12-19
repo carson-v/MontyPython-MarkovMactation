@@ -7,7 +7,7 @@ Usage: Run ``` python3 script.py ``` and input # of words to be generated
 
 ## Output Example:
 
-![ExampleOutput](outex.jpg)
+![ExampleOutput](outex.png)
 
 Requirements:
 - Python3

@@ -111,7 +111,7 @@ def get_count_matrix(text):
     return matrix
 
 
-## function: reformat matrix to be based on probability, not counts
+## function: reformat matrix to be based on probability, from counts
 ## returns: transition probability matrix
 def prob_format(matrix):
 
@@ -127,7 +127,7 @@ def prob_format(matrix):
     return matrix
 
 ## function: text generator
-## returns: gemerated text
+## returns: generated text
 def builder(matrix, size):
 
     text = ['']
