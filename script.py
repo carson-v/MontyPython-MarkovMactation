@@ -1,23 +1,21 @@
 import string
 import random
-import os.path
+from os import path
 
+## function: scrape MP fan website for TV Shows, movies.
+## returns: list of quotes
 def scrape():
-    ## function: scrape MP fan website for TV Shows, movies.
-    ## returns: list of quotes
     from selenium import webdriver
     from bs4 import BeautifulSoup
-    import time
 
     ## making url lists
     urls = ["http://montypython.50webs.com/Holy_Grail_Scripts.htm", "http://montypython.50webs.com/Meaning_of_Life.htm", "http://montypython.50webs.com/Life_of_Brian.htm"]
     urls += ["http://montypython.50webs.com/Monty_Python_Series_" + str(i) + ".htm" for i in range(1,5)]
 
-    ##scrapes text
+    ## scrapes text
     text = []
     driver = webdriver.Firefox()
     for link in urls:
-        #vists each overview url
         driver.get(link)
         soup = BeautifulSoup(driver.page_source, features="html.parser")
         pobj = soup.findAll('p')
@@ -31,12 +29,14 @@ def scrape():
                 #if multiple p/a links
                     for a in p.findAll('a'):
                         urls.append(a["href"])
+
         #filter useless urls
         scenes = []
         for u in urls:
             if u and "scripts" in u:
                 scenes.append("http://montypython.50webs.com/" + u)
 
+        #scraping actual script data from each scene
         for s in scenes:
             driver.get(s)
             soup = BeautifulSoup(driver.page_source, features="html.parser")
@@ -51,7 +51,8 @@ def scrape():
     driver.quit()
     return text
 
-##removes garbage from scraped text
+## function: removes garbage from scraped text
+## returns: text (cleaned)
 def cleantext():
     #dirty text in
     text = scrape()
@@ -67,12 +68,17 @@ def cleantext():
         text[x] = text[x].replace("...", "")
         ##remove quotations
         text[x] = text[x].replace('"', '')
+        ##remove dashes
         text[x] = text[x].replace("-", " ")
+        ##remove colons
         text[x] = text[x].replace(":", "")
+        ##remove parentheses
+        text[x] = text[x].replace("(","").replace(")","")
     
     return text
 
-#puts counts of words into a matrix
+## function: puts counts of word transitions into a matrix
+## returns: matrix with transition counts
 def get_count_matrix(text):
 
     ##get count of word transitions
@@ -105,7 +111,8 @@ def get_count_matrix(text):
     return matrix
 
 
-#reformat matrix to be based on probability, not counts
+## function: reformat matrix to be based on probability, not counts
+## returns: transition probability matrix
 def prob_format(matrix):
 
     for k1 in matrix.keys():
@@ -113,12 +120,14 @@ def prob_format(matrix):
         rowsum = 0
         for k2 in matrix[k1].keys():
             rowsum+= matrix[k1][k2]
-        #reformat row entries as probability
+        #reformat each row entry as probability
         for k2 in matrix[k1].keys():
             matrix[k1][k2] = (matrix[k1][k2]) / rowsum
 
     return matrix
 
+## function: text generator
+## returns: gemerated text
 def builder(matrix, size):
 
     text = ['']
@@ -139,25 +148,36 @@ def builder(matrix, size):
 
         #if x does not transition to any y, append random word
         else:
-            text.append(random.choice(list(matrix.keys())))
+            text.append(random.choice(list(matrix.keys())).lower())
             
     #turn text list into string, fix punctuation spacing
     text = ((' '.join(text)).replace(" !", "!").replace(" ?", "?").replace(" .", ".")).strip()
     return (text)
 
 
-
+## MAIN CLASS
 def main():
-    #rescrape/clean text data
-    matrix = prob_format(get_count_matrix(cleantext()))
+    ##if data exists already in folder, use it
+    if path.exists("data.txt"):
+        with open("data.txt", 'r') as file:
+            text = file.readlines()
+    else:
+        text = list(cleantext())
+        with open("data.txt", "w") as file:
+            for t in text:
+                file.writelines(t)
+    ##else scrape for first time, store data
+
+    matrix = prob_format(get_count_matrix(text))
 
     #user interface loop
-    inp = int(input("About how many words would you like? (-1 to quit) :  "))
+    inp = int(input("How many words would you like? (0 to quit) :  "))
     while (inp > 0):
         print("----------------------------------- \n")
-        print(builder(matrix, inp))
+        output = builder(matrix, inp)
+        print(output)
         print("----------------------------------- \n")
-        inp = int(input("About how many words would you like? (0 to quit) :  "))
+        inp = int(input("How many words would you like? (0 to quit) :  "))
     
 
 if __name__ == "__main__":
