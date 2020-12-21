@@ -6,6 +6,7 @@ from os import path
 ## returns: list of quotes
 def scrape():
     from selenium import webdriver
+    from selenium.webdriver.firefox.options import Options
     from bs4 import BeautifulSoup
 
     ## making url lists
@@ -14,7 +15,10 @@ def scrape():
 
     ## scrapes text
     text = []
-    driver = webdriver.Firefox()
+    options = Options()
+    options.add_argument('--headless')
+    driver = webdriver.Firefox(options=options)
+    print('\n ...Scraping Data... \n')
     for link in urls:
         driver.get(link)
         soup = BeautifulSoup(driver.page_source, features="html.parser")
@@ -173,7 +177,7 @@ def main():
     #user interface loop
     inp = int(input("How many words would you like? (0 to quit) :  "))
     while (inp > 0):
-        print("----------------------------------- \n")
+        print("\n-----------------------------------")
         output = builder(matrix, inp)
         print(output)
         print("----------------------------------- \n")
