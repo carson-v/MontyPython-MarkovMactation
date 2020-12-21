@@ -11,8 +11,6 @@ Usage: Run ``` python3 script.py ``` and input # of words to be generated
 
 Requirements:
 - Python3
-- Selenium
-- BS4
 
 ## Data-Scraping Features:
 - Movie/TV scripts are generously provided by http://montypython.50webs.com
